@@ -51,7 +51,7 @@ const SummarisingPage = () => {
 
         {summary && !loading && (
           <div
-            className="mt-6 p-4 border border-gray-300 rounded-md lg:max-w-4xl md:max-w-3xl sm:max-w-full mx-auto"
+            className="mt-6 p-4 border border-gray-300 rounded-md lg:max-w-7xl md:max-w-3xl sm:max-w-full mx-auto"
             style={{
               background: "#1f2937",
               color: "white",
