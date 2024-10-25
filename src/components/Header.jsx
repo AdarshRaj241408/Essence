@@ -7,11 +7,22 @@ import { navigation } from "../constants";
 import Button from "./Button";
 import MenuSvg from "../assets/svg/MenuSvg";
 import { HamburgerMenu } from "./design/Header";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const Header = () => {
   const pathname = useLocation();
   const [openNavigation, setOpenNavigation] = useState(false);
+  const [user, setUser] = useState(null);
+
+  const auth = getAuth();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return () => unsubscribe();
+  }, [auth]);
 
   const toggleNavigation = () => {
     if (openNavigation) {
@@ -28,6 +39,12 @@ const Header = () => {
 
     enablePageScroll();
     setOpenNavigation(false);
+  };
+
+  const getInitial = () => {
+    if (user?.displayName) return user.displayName[0].toUpperCase();
+    if (user?.email) return user.email[0].toUpperCase();
+    return "?"; // Default icon if no user info
   };
 
   return (
@@ -74,15 +91,23 @@ const Header = () => {
           <HamburgerMenu />
         </nav>
 
-        <a
-          href="#signup"
-          className="button hidden mr-8 text-n-1/50 transition-colors hover:text-n-1 lg:block"
-        >
-          New account
-        </a>
-        <Button className="hidden lg:flex" href="#login">
-          Sign in
-        </Button>
+        {!user ? (
+          <>
+            <a
+              href="/register"
+              className="button hidden mr-8 text-n-1/50 transition-colors hover:text-n-1 lg:block"
+            >
+              New account
+            </a>
+            <Button className="hidden lg:flex" href="/login">
+              Sign in
+            </Button>
+          </>
+        ) : (
+          <div className="hidden lg:flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold">
+            {getInitial()}
+          </div>
+        )}
 
         <Button
           className="ml-auto lg:hidden"
