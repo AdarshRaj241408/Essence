@@ -2,6 +2,10 @@
 
 Essence is an AI-powered text summarization tool designed to condense lengthy pieces of text into shorter, clear summaries. The tool leverages the Hugging Face API for accurate and efficient summarization, making it ideal for quick content review.
 
+## Live Demo
+
+Check out the live site here: [Essence on Vercel](https://essence-bay.vercel.app/)
+
 ## Features
 
 - Summarize Long Texts: Efficiently distills large bodies of text.
