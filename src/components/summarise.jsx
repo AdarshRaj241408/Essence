@@ -78,7 +78,10 @@ const SummarisingPage = () => {
           }}
         />
 
-        <div className="flex justify-center mt-4 gap-2">
+        <div className="flex justify-end mt-4 gap-2">
+          {file && ( // Display the selected file name
+            <span className="text-purple-600 font-bold mr-2 mt-2">{file}</span>
+          )}
           <input
             type="file"
             onChange={handleFileUpload}
@@ -87,15 +90,12 @@ const SummarisingPage = () => {
             style={{ display: "none" }} // Hide the default file input
             id="file-upload" // Use an ID for the label
           />
-          <label
-            htmlFor="file-upload"
-            className="cursor-pointer p-2 bg-purple-600 text-white rounded-md shadow-md transition duration-300 hover:bg-purple-700"
+          <Button
+            onClick={() => document.getElementById("file-upload").click()} // Trigger the file input click
+            className="flex items-center justify-center p-2 text-white rounded-md shadow-md transition duration-300 "
           >
-            Choose File
-          </label>
-          {file && ( // Display the selected file name
-            <span className="text-white">{file}</span>
-          )}
+            <span className="ml-2">Choose File</span>
+          </Button>
           <Button
             onClick={handleSubmit}
             className="transition duration-300 rounded-md shadow-lg"
