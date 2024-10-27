@@ -2,20 +2,63 @@ import React, { useState } from "react";
 import summarizeText from "../utils/openAiAPI"; // Adjust the path to match your folder structure
 import Button from "./Button"; // Adjust path if needed
 import Section from "./Section"; // Adjust path if needed
+import convertFileToText from "../utils/convertFileToText";
 
 const SummarisingPage = () => {
   const [inputText, setInputText] = useState("");
   const [summary, setSummary] = useState("");
   const [loading, setLoading] = useState(false);
+  const [file, setFile] = useState(null); // State to manage the uploaded file
+
+  const MAX_LENGTH = 1024; // Adjust this based on the model's limit
+
+  const summarizeInChunks = async (text) => {
+    const chunkSize = MAX_LENGTH; // Adjust this size based on the model's limit
+    const chunks = [];
+
+    for (let i = 0; i < text.length; i += chunkSize) {
+      chunks.push(text.substring(i, i + chunkSize));
+    }
+
+    const summaries = await Promise.all(
+      chunks.map((chunk) => summarizeText(chunk))
+    );
+    return summaries.join("\n"); // Join summaries with a newline
+  };
 
   const handleSubmit = async () => {
     setLoading(true);
-    const result = await summarizeText(inputText);
+
+    const result = await summarizeInChunks(inputText);
     if (result) {
       setSummary(result);
     }
     setInputText("");
-    setLoading(false); // Stop loading
+    setFile(null); // Clear the file state after submission
+    setLoading(false);
+  };
+
+  // Function to handle file upload and text extraction
+  const handleFileUpload = async (e) => {
+    const selectedFile = e.target.files[0];
+    if (file) {
+      console.error("Only one file can be uploaded at a time.");
+      return; // Prevent uploading another file
+    }
+
+    if (selectedFile) {
+      const text = await convertFileToText(selectedFile);
+      if (text) {
+        console.log("Extracted Text:", text); // Log the extracted text
+        setInputText(text); // Set the extracted text to inputText
+        setFile(selectedFile.name); // Store the file name
+        setLoading(false); // Stop loading if conversion is successful
+      } else {
+        console.error("No text extracted from PDF");
+      }
+    } else {
+      console.error("No file selected");
+    }
   };
 
   return (
@@ -35,10 +78,27 @@ const SummarisingPage = () => {
           }}
         />
 
-        <div className="flex justify-center mt-4">
+        <div className="flex justify-center mt-4 gap-2">
+          <input
+            type="file"
+            onChange={handleFileUpload}
+            accept=".txt,.docx,.pdf" // Accept specific file types
+            className="file-input"
+            style={{ display: "none" }} // Hide the default file input
+            id="file-upload" // Use an ID for the label
+          />
+          <label
+            htmlFor="file-upload"
+            className="cursor-pointer p-2 bg-purple-600 text-white rounded-md shadow-md transition duration-300 hover:bg-purple-700"
+          >
+            Choose File
+          </label>
+          {file && ( // Display the selected file name
+            <span className="text-white">{file}</span>
+          )}
           <Button
             onClick={handleSubmit}
-            className=" transition duration-300 rounded-md shadow-lg"
+            className="transition duration-300 rounded-md shadow-lg"
             disabled={loading}
           >
             {loading ? (
@@ -51,7 +111,7 @@ const SummarisingPage = () => {
 
         {summary && !loading && (
           <div
-            className="mt-6 p-4 border border-gray-300 rounded-md lg:max-w-7xl md:max-w-3xl sm:max-w-full mx-auto"
+            className="mt-6 p-4 border border-gray-300 rounded-md lg:max-w-7xl md:max-w-3xl sm:max-w-fit mx-auto"
             style={{
               background: "#1f2937",
               color: "white",
@@ -63,7 +123,7 @@ const SummarisingPage = () => {
         )}
       </div>
       {/* Inline styles for the spinner */}
-      <style jsx>{`
+      <style>{`
         .spinner {
           width: 24px;
           height: 24px;
