@@ -29,7 +29,8 @@ const Hero = () => {
       <div className="container relative" ref={parallaxRef}>
         <div className="relative z-1 max-w-[62rem] mx-auto text-center mb-[3.875rem] md:mb-20 lg:mb-[6.25rem]">
           <h1 className="h1 mb-6">
-            Simplify Your Reading with&nbsp;AI&nbsp;Summarization through{" "}
+            Simplify Your Reading Nikita! with&nbsp;AI&nbsp;Summarization
+            through{" "}
             <span className="inline-block relative">
               Essence{" "}
               <img
