@@ -6,7 +6,7 @@
 
 Check out the live site here: [Essence on Vercel](https://essence-bay.vercel.app/)
 
-## Features
+## ✨ Features
 
 - **Summarize Long Texts**: Efficiently distills large bodies of text.
 - **Responsive UI**: Designed with a user-friendly interface.
@@ -36,26 +36,32 @@ Check out the live site here: [Essence on Vercel](https://essence-bay.vercel.app
 
 To run this project locally, follow these steps:
 
-1. Clone the repository:
+1.  Clone the repository:
 
-`git clone https://github.com/AdarshRaj241408/Essence.git
-cd Essence`
+        `git clone https://github.com/AdarshRaj241408/Essence.git
+        cd Essence`
 
-2. Install dependencies:
+2.  Install dependencies:
 
-`npm install`
+        `npm install`
 
-3. Configure Environment Variables:
+3.  Configure Environment Variables:
 
 - Create a .env file in the root directory.
 - Add your API keys for Hugging Face and Firebase configuration as follows:
-  ``
+- - `VITE_FIREBASE_API_KEY=Your_API_KEY`
+  - `VITE_FIREBASE_AUTH_DOMAIN=essence-87bee.firebaseapp.com`
+  - `VITE_FIREBASE_PROJECT_ID=essence-87bee`
+  - `VITE_FIREBASE_STORAGE_BUCKET=essence-87bee.appspot.com`
+  - `VITE_FIREBASE_MESSAGING_SENDER_ID=602662277036`
+  - `VITE_FIREBASE_APP_ID=1:602662277036:web:d85bb44aa2ae4673e3b409`
+  - `VITE_FIREBASE_MEASUREMENT_ID=G-BKTBJH0SDK`
 
-4. Start the development server:
+1.  Start the development server:
 
-`npm run dev`
+        `npm run dev`
 
-5. Open http://localhost:3000 in your browser to view the application.
+2.  Open http://localhost:3000 in your browser to view the application.
 
 ## 🧑‍💻 Usage
 
